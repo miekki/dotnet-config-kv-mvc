@@ -1,0 +1,10 @@
+#  =Go to project folder (where is csproj)
+# cd ./src/api
+
+# initialize user secrets 
+dotnet user-secrets init
+
+# store the secret
+dotnet user-secrets set "MyAppSettings:MySecret" "MyDevSecret"
+
+
