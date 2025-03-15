@@ -1,7 +1,9 @@
 namespace api.Models;
 
-public class MyAppSettings
+public record MyAppSettings
 {
-    public string MySecret { get; set; } = string.Empty;
-    public string Variable1 { get; set; } = string.Empty;
+    public string MySecret { get; init; } = string.Empty;
+    public string Variable1 { get; init; } = string.Empty;
 }
+
+// public record MyAppSettings(string MySecret = "", string Variable1 = "");
