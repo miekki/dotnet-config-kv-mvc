@@ -31,7 +31,7 @@ az deployment group create --resource-group config-sample-mvc-rg --template-file
 cd ./src/api
 
 # deploy the app to the web app
-az webapp deploy --resource-group config-sample-mvc-rg --name config-sample-app --type zip  --src-path ./publish/publish.zip
+az webapp deploy --resource-group config-sample-mvc-rg --name config-sample-mvc-app --type zip  --src-path ./publish/publish.zip
 
 # only variable from appsetting.json will be visible not form appsettings.Development.jsno
 #  in key vault store hierarchies secrets by using '--' eg. MyAppSettings--MySecret
