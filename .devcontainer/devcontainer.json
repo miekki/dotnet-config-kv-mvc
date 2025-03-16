@@ -16,7 +16,9 @@
 			"extensions": [
 				"ms-dotnettools.csdevkit",
 				"esbenp.prettier-vscode",
-				"ms-azuretools.vscode-bicep"
+				"ms-azuretools.vscode-bicep",
+				"Azurite.azurite",
+				"ms-azuretools.vscode-azurestorage"
 			]
 		}
 	},

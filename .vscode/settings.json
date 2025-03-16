@@ -1,0 +1,10 @@
+{
+    // for using pfx cert - don't forget to change the url from 127.0.0.1 to localhost
+    // "azurite.cert": "/workspaces/dotnet-config-kv-mvc/azurite/cert.pfx",
+    // "azurite.pwd": "test_pass",
+    "azurite.cert": "/workspaces/dotnet-config-kv-mvc/azurite/127.0.0.1.pem",
+    "azurite.key": "/workspaces/dotnet-config-kv-mvc/azurite/127.0.0.1-key.pem",
+    "azurite.location": "/workspaces/dotnet-config-kv-mvc/azurite/",
+    "azurite.oauth": "basic",
+    
+}

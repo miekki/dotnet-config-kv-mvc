@@ -53,6 +53,10 @@ resource configSampleApp 'Microsoft.Web/sites@2024-04-01' = {
           name: 'KeyVaultConfig__KeyVaultUrl'
           value: configSampleKv.properties.vaultUri
         }
+        {
+          name: 'MyAppSettings__TableUri'
+          value: storageAccount.properties.primaryEndpoints.table //'https://${storageAccount.name}.table.core.windows.net'
+        }
       ]
     }
   }
@@ -68,5 +72,43 @@ resource keyVaultRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04
       'Microsoft.Authorization/roleDefinitions',
       '4633458b-17de-408a-b874-0445c86b69e6'
     ) // Key Vault Secrets User
+  }
+}
+
+// Create storage account for Table Storage
+resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
+  name: 'configsampletable' // must be globally unique
+  location: 'uksouth'
+  sku: {
+    name: 'Standard_LRS'
+  }
+  kind: 'StorageV2'
+  properties: {
+    allowBlobPublicAccess: false
+    minimumTlsVersion: 'TLS1_2'
+    supportsHttpsTrafficOnly: true
+  }
+}
+
+// // Add Table Storage connection string to web app settings
+// resource webAppSettings 'Microsoft.Web/sites/config@2024-04-01' = {
+//   parent: configSampleApp
+//   name: 'appsettings'
+//   properties: {
+//     MyAppSettings__TableUri: 'https://${storageAccount.name}.table.core.windows.net'
+//   }
+// }
+
+// Grant Table Data Contributor role to web app's managed identity
+resource tableRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(storageAccount.id, 'TableContributor', configSampleApp.id)
+  scope: storageAccount
+  properties: {
+    principalId: configSampleApp.identity.principalId
+    principalType: 'ServicePrincipal'
+    roleDefinitionId: subscriptionResourceId(
+      'Microsoft.Authorization/roleDefinitions',
+      '0a9a7e1f-b9d0-4cc4-a60d-0319b160aaa3' // Storage Table Data Contributor
+    )
   }
 }

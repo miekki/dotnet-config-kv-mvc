@@ -1,6 +1,10 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using api.Models;
+using Azure.Data.Tables;
+using Azure.Data.Tables.Models;
+using Azure;
+using Azure.Identity;
 
 namespace api.Controllers;
 
@@ -30,6 +34,52 @@ public class HomeController : Controller
         // Get the secret and variable by using the injected MyAppSettings object (strong typed)
         ViewBag.myAppSettingsSecret = _myAppSettings.MySecret;
         ViewBag.myAppSettingsVariable = _myAppSettings.Variable1;
+
+
+        var tableServiceClient = new TableServiceClient(new Uri(_myAppSettings.TableUri), new DefaultAzureCredential());
+        var tableName = "TestTable";
+        TableItem table = tableServiceClient.CreateTableIfNotExists(tableName);
+        ViewBag.myTableName = tableName;
+
+        var partitionKey = "Stationery";
+
+        var tableClient = tableServiceClient.GetTableClient(tableName);
+        // var tableClient = new TableClient(
+        //     new Uri(_myAppSettings.TableUri),
+        //     tableName,
+        //     new DefaultAzureCredential()
+        // );
+        // var tableClient = new TableClient(new Uri(_myAppSettings.TableUri), tableName, new DefaultAzureCredential());
+
+        Pageable<OfficeSuplyEntity> queryResultsFilter = tableClient.Query<OfficeSuplyEntity>(filter: $"PartitionKey eq '{partitionKey}'");
+
+        if (queryResultsFilter.Count() < 2)
+        {
+            var rowKey = DateTime.UtcNow.ToString("yyyy-MM-dd-HH-mm-ss-fff");
+            var officeProduct1 = new OfficeSuplyEntity
+            {
+                Product = "Pen Set - colors",
+                Price = 7.00,
+                Quantity = 21,
+                PartitionKey = partitionKey,
+                RowKey = rowKey
+            };
+            var rowKey2 = DateTime.UtcNow.ToString("yyyy-MM-dd-HH-mm-ss-fff");
+            var officeProduct2 = new OfficeSuplyEntity
+            {
+                Product = "Pen Set",
+                Price = 3.00,
+                Quantity = 10,
+                PartitionKey = partitionKey,
+                RowKey = rowKey2
+            };
+
+
+            tableClient.AddEntity(officeProduct1);
+            tableClient.AddEntity(officeProduct2);
+        }
+
+        ViewBag.queryTableResults = queryResultsFilter;
 
         return View();
     }

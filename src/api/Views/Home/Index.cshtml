@@ -16,3 +16,27 @@
     <h3>My app Settings secret is: @ViewBag.myAppSettingsSecret</h3>
     <h3>My app Setting Variable is: @ViewBag.myAppSettingsVariable</h3>
 </div>
+
+<div>
+    <h3>Table name is: @ViewBag.myTableName</h3>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (OfficeSuplyEntity tableItem in ViewBag.queryTableResults)
+            {
+                <tr>
+                    <td>@tableItem.Product</td>
+                    <td>@tableItem.Price</td>
+                    <td>@tableItem.Quantity</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -35,3 +35,12 @@ az webapp deploy --resource-group config-sample-mvc-rg --name config-sample-mvc-
 
 # only variable from appsetting.json will be visible not form appsettings.Development.jsno
 #  in key vault store hierarchies secrets by using '--' eg. MyAppSettings--MySecret
+
+
+
+
+#  Set Up Azurite - Local Azure Storage Emulator
+#  To be able to use with oAuth we need to use https protocul and that means we need configure certificats
+#  The dev container already has a self-signed certificate installed in the container and configure to use
+# genereta pfx cert
+# dotnet dev-certs https --trust -ep cert.pfx -p test_pass
