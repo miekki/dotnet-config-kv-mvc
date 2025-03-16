@@ -398,3 +398,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+__azurite_db_table__.json
+127.0.0.1.pem
+AzuriteConfig
+127.0.0.1-key.pem
